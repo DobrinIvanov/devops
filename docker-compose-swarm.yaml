@@ -1,0 +1,24 @@
+services:
+   web:
+      image: dobreca/swarm-app
+      deploy:
+         replicas: 5
+      ports:
+         - 8080:80
+      volumes:
+         - "/home/vagrant/devops/web:/var/www/html:ro"
+      networks:
+         - app-network
+   db:
+      image: dobreca/swarm-app
+      networks:
+         - app-network
+      environment:
+         MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
+      secrets:
+         - db_root_password
+secres:
+   db_root_password:
+      external: true
+networks:
+   app-network:
